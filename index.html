@@ -8,24 +8,16 @@
         :root { --primary: #4CAF50; --secondary: #2196F3; --danger: #f44336; --bg: #f4f7f6; --text: #333; }
         body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; }
         .container { max-width: 800px; margin: 0 auto; background: white; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); overflow: hidden; position: relative; }
-        
-        /* Top Bar & Auth */
         .header-bar { background: #333; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; color: white; }
         .header-bar h1 { margin: 0; font-size: 18px; display: flex; align-items: center; }
-        
-        /* Tabs Styling */
         .tabs { display: flex; background: #eee; border-bottom: 2px solid #ddd; }
         .tab-btn { flex: 1; padding: 15px; border: none; background: none; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; }
         .tab-btn:hover { background: #ddd; }
         .tab-btn.active { background: white; color: var(--primary); border-bottom: 3px solid var(--primary); }
-        
-        /* Content Styling */
         .tab-content { display: none; padding: 30px; }
         .tab-content.active { display: block; }
         .card { background: #f9f9f9; padding: 20px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 20px; text-align: center; }
         .amount-display { font-size: 36px; font-weight: bold; color: var(--primary); margin: 10px 0; }
-        
-        /* Forms & Tables */
         input[type="number"], input[type="text"], input[type="password"], input[type="file"] { padding: 8px; margin: 5px; border: 1px solid #ccc; border-radius: 4px; }
         button { padding: 8px 15px; border: none; border-radius: 4px; background: var(--secondary); color: white; cursor: pointer; }
         button.add { background: var(--primary); }
@@ -33,48 +25,35 @@
         table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
         th { background: #f1f1f1; }
-        
-        /* Thumbnail Receipts */
         .receipt-img { max-width: 80px; max-height: 80px; border-radius: 4px; cursor: pointer; transition: transform 0.2s; border: 1px solid #ddd; }
         .receipt-img:hover { transform: scale(1.05); box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-        
-        /* Admin Security Styles */
         body:not(.admin-mode) .admin-only { display: none !important; }
         .admin-panel { background: #fff3e0; border: 1px dashed #ff9800; padding: 15px; border-radius: 8px; margin-top: 20px; }
         .admin-panel h3 { margin-top: 0; color: #ff9800; font-size: 16px; }
-        
-        /* Modals */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); align-items: center; justify-content: center; z-index: 1000; }
         .modal-overlay.active { display: flex; }
         .modal-content { background: white; padding: 30px; border-radius: 8px; text-align: center; width: 300px; }
         .modal-content input { width: 90%; margin-bottom: 15px; }
-        
-        /* Fullscreen Image Specifics */
         .full-img { max-width: 90vw; max-height: 90vh; border-radius: 8px; object-fit: contain; }
         .close-img-btn { position: absolute; top: 20px; right: 30px; font-size: 40px; color: white; cursor: pointer; font-weight: bold; }
-        
-        /* Loading Status */
         #loading { display: none; color: #ffeb3b; font-weight: bold; margin-left: 15px; font-size: 14px; background: rgba(0,0,0,0.2); padding: 3px 8px; border-radius: 4px;}
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- Header with Login/Logout -->
     <div class="header-bar">
         <h1>Fundraising Campaign <span id="loading">Saving...</span></h1>
         <button id="login-btn" onclick="openLogin()">Admin Login</button>
         <button id="logout-btn" class="admin-only" style="background: var(--danger);" onclick="logout()">Logout Admin</button>
     </div>
 
-    <!-- Navigation Tabs -->
     <div class="tabs">
         <button class="tab-btn active" onclick="openTab('tab1', this)">1. Overview</button>
         <button class="tab-btn" onclick="openTab('tab2', this)">2. Donors</button>
         <button class="tab-btn" onclick="openTab('tab3', this)">3. Expenses & Receipts</button>
     </div>
 
-    <!-- TAB 1: OVERVIEW -->
     <div id="tab1" class="tab-content active">
         <h2>Fundraising Overview</h2>
         <div class="card">
@@ -98,7 +77,6 @@
         </div>
     </div>
 
-    <!-- TAB 2: DONORS -->
     <div id="tab2" class="tab-content">
         <h2>Donor List</h2>
         <div class="admin-panel admin-only">
@@ -116,7 +94,6 @@
         </table>
     </div>
 
-    <!-- TAB 3: EXPENSES & RECEIPTS -->
     <div id="tab3" class="tab-content">
         <h2>Expenses & Receipts</h2>
         <div class="admin-panel admin-only">
@@ -139,7 +116,6 @@
     </div>
 </div>
 
-<!-- Login Modal -->
 <div id="login-modal" class="modal-overlay">
     <div class="modal-content">
         <h2>Admin Access</h2>
@@ -150,27 +126,83 @@
     </div>
 </div>
 
-<!-- Fullscreen Image Modal (Lightbox) -->
 <div id="image-modal" class="modal-overlay" onclick="closeImageModal()">
     <span class="close-img-btn">&times;</span>
     <img id="full-image" class="full-img" src="" alt="Full Screen Receipt">
 </div>
 
 <script>
-    // =========================================================================
-    // ⚠️ CORRECTED JSONBIN DETAILS ⚠️
+    // DO NOT CHANGE THESE KEYS
     const JSONBIN_ID = "6a7d3a02f5f4af5e290f216e"; 
     const JSONBIN_API_KEY = "$2a$10$bdJB7CJDIUeRAS37oLVvd.HjRVYqbLcE8It/jEQM3knNtK406Z/02"; 
-
-    // Free ImgBB API key for uploading images directly (leave this as is)
     const IMGBB_API_KEY = "3a0b3f880a47eb1081b95f269a3c0350"; 
-    // =========================================================================
 
-    // Our master data object
     let appData = { collected: 0, balance: 0, donorCounter: 0, donors: [], expenses: [] };
     const loadingIndicator = document.getElementById('loading');
 
-    // --- CLOUD DATABASE LOGIC (JSONBin) ---
+    // UI & Tab Functions
+    window.openTab = function(tabId, btnElement) {
+        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        btnElement.classList.add('active');
+    };
+    
+    window.openLogin = () => document.getElementById('login-modal').classList.add('active');
+    window.closeLogin = () => {
+        document.getElementById('login-modal').classList.remove('active');
+        document.getElementById('username').value = '';
+        document.getElementById('password').value = '';
+    };
+    
+    window.checkLogin = () => {
+        if (document.getElementById('username').value === 'NAVA' && document.getElementById('password').value === 'RANAUSABAH03') {
+            document.body.classList.add('admin-mode');
+            document.getElementById('login-btn').style.display = 'none';
+            window.closeLogin();
+        } else { 
+            alert("Incorrect Username or Password!"); 
+        }
+    };
+    
+    window.logout = () => { 
+        document.body.classList.remove('admin-mode'); 
+        document.getElementById('login-btn').style.display = 'block'; 
+        alert("Logged out securely.");
+    };
+    
+    window.openImageModal = (src) => { 
+        document.getElementById('full-image').src = src; 
+        document.getElementById('image-modal').classList.add('active'); 
+    };
+    
+    window.closeImageModal = () => { 
+        document.getElementById('image-modal').classList.remove('active'); 
+        document.getElementById('full-image').src = '';
+    };
+
+    function renderAll() {
+        document.getElementById('display-collected').innerText = "RM" + appData.collected.toFixed(2);
+        document.getElementById('display-balance').innerText = "RM" + appData.balance.toFixed(2);
+        
+        document.getElementById('donor-list').innerHTML = appData.donors.map(d => `
+            <tr>
+                <td>${d.name}</td>
+                <td>RM${d.amount.toFixed(2)}</td>
+                <td class="admin-only"><button class="remove" onclick="removeDonor(${d.id})">Remove</button></td>
+            </tr>
+        `).join('');
+
+        document.getElementById('expense-list').innerHTML = appData.expenses.map(e => `
+            <tr>
+                <td>${e.desc}</td>
+                <td>RM${e.amount.toFixed(2)}</td>
+                <td>${e.receiptUrl ? `<img src="${e.receiptUrl}" class="receipt-img" title="Click to view full screen" onclick="openImageModal('${e.receiptUrl}')">` : '<span style="color:#999; font-style:italic;">No receipt</span>'}</td>
+                <td class="admin-only"><button class="remove" onclick="removeExpense(${e.id})">Remove</button></td>
+            </tr>
+        `).join('');
+    }
+
     async function loadData() {
         try {
             loadingIndicator.innerText = "Loading data...";
@@ -182,7 +214,6 @@
             const json = await res.json();
             if (json.record) {
                 appData = json.record;
-                // Fallbacks just in case the JSON doesn't have these properties yet
                 appData.collected = appData.collected || 0;
                 appData.balance = appData.balance || 0;
                 appData.donorCounter = appData.donorCounter || 0;
@@ -194,7 +225,7 @@
             loadingIndicator.style.display = 'none';
         } catch (error) {
             console.error("Failed to load data", error);
-            loadingIndicator.innerText = "Error loading!";
+            loadingIndicator.innerText = "Database error";
             setTimeout(() => loadingIndicator.style.display = 'none', 3000);
         }
     }
@@ -222,33 +253,6 @@
         }
     }
 
-    // --- UI RENDERING LOGIC ---
-    function renderAll() {
-        // Tab 1: Overview
-        document.getElementById('display-collected').innerText = "RM" + appData.collected.toFixed(2);
-        document.getElementById('display-balance').innerText = "RM" + appData.balance.toFixed(2);
-        
-        // Tab 2: Donors
-        document.getElementById('donor-list').innerHTML = appData.donors.map(d => `
-            <tr>
-                <td>${d.name}</td>
-                <td>RM${d.amount.toFixed(2)}</td>
-                <td class="admin-only"><button class="remove" onclick="removeDonor(${d.id})">Remove</button></td>
-            </tr>
-        `).join('');
-
-        // Tab 3: Expenses
-        document.getElementById('expense-list').innerHTML = appData.expenses.map(e => `
-            <tr>
-                <td>${e.desc}</td>
-                <td>RM${e.amount.toFixed(2)}</td>
-                <td>${e.receiptUrl ? `<img src="${e.receiptUrl}" class="receipt-img" title="Click to view full screen" onclick="openImageModal('${e.receiptUrl}')">` : '<span style="color:#999; font-style:italic;">No receipt</span>'}</td>
-                <td class="admin-only"><button class="remove" onclick="removeExpense(${e.id})">Remove</button></td>
-            </tr>
-        `).join('');
-    }
-
-    // --- ADMIN ACTIONS ---
     window.updateOverview = function(type) {
         const val = parseFloat(document.getElementById(`admin-${type}`).value);
         if (isNaN(val)) return;
@@ -267,7 +271,6 @@
         appData.donorCounter++;
         appData.donors.push({ id: Date.now(), name: "Donor " + appData.donorCounter, amount: amount });
         
-        // Auto add to totals
         appData.collected += amount;
         appData.balance += amount;
         
@@ -290,7 +293,6 @@
         
         let receiptUrl = '';
         
-        // Upload image to ImgBB (Free Image Hosting)
         if (fileInput.files[0]) {
             loadingIndicator.innerText = "Uploading receipt...";
             loadingIndicator.style.display = 'inline';
@@ -314,8 +316,6 @@
         }
 
         appData.expenses.push({ id: Date.now(), desc: desc, amount: amount, receiptUrl: receiptUrl });
-        
-        // Auto deduct from balance
         appData.balance -= amount;
         
         descInput.value = '';
@@ -336,47 +336,7 @@
         saveData();
     };
 
-    // --- UI/MODAL FUNCTIONS ---
-    window.openTab = function(tabId, btnElement) {
-        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active');
-        btnElement.classList.add('active');
-    };
-    
-    // Login system
-    window.openLogin = () => document.getElementById('login-modal').classList.add('active');
-    window.closeLogin = () => {
-        document.getElementById('login-modal').classList.remove('active');
-        document.getElementById('username').value = '';
-        document.getElementById('password').value = '';
-    };
-    window.checkLogin = () => {
-        if (document.getElementById('username').value === 'NAVA' && document.getElementById('password').value === 'RANAUSABAH03') {
-            document.body.classList.add('admin-mode');
-            document.getElementById('login-btn').style.display = 'none';
-            window.closeLogin();
-        } else { 
-            alert("Incorrect Username or Password!"); 
-        }
-    };
-    window.logout = () => { 
-        document.body.classList.remove('admin-mode'); 
-        document.getElementById('login-btn').style.display = 'block'; 
-        alert("Logged out securely.");
-    };
-    
-    // Image viewer
-    window.openImageModal = (src) => { 
-        document.getElementById('full-image').src = src; 
-        document.getElementById('image-modal').classList.add('active'); 
-    };
-    window.closeImageModal = () => { 
-        document.getElementById('image-modal').classList.remove('active'); 
-        document.getElementById('full-image').src = '';
-    };
-
-    // Initialize the app by pulling data from the cloud
+    // Load data when page starts
     loadData();
 </script>
 
