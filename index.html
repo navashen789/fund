@@ -158,9 +158,9 @@
 
 <script>
     // =========================================================================
-    // ⚠️ PASTE YOUR JSONBIN DETAILS HERE ⚠️
+    // ⚠️ CORRECTED JSONBIN DETAILS ⚠️
     const JSONBIN_ID = "6a7d3a02f5f4af5e290f216e"; 
-    const JSONBIN_API_KEY = "RM2aRM10RMbdJB7CJDIUeRAS37oLVvd.HjRVYqbLcE8It/jEQM3knNtK406Z/02"; 
+    const JSONBIN_API_KEY = "$2a$10$bdJB7CJDIUeRAS37oLVvd.HjRVYqbLcE8It/jEQM3knNtK406Z/02"; 
 
     // Free ImgBB API key for uploading images directly (leave this as is)
     const IMGBB_API_KEY = "3a0b3f880a47eb1081b95f269a3c0350"; 
@@ -176,7 +176,7 @@
             loadingIndicator.innerText = "Loading data...";
             loadingIndicator.style.display = 'inline';
             
-            const res = await fetch(`https://api.jsonbin.io/v3/b/RM{JSONBIN_ID}/latest`, {
+            const res = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_ID}/latest`, {
                 headers: { 'X-Master-Key': JSONBIN_API_KEY }
             });
             const json = await res.json();
@@ -204,7 +204,7 @@
             loadingIndicator.innerText = "Saving data...";
             loadingIndicator.style.display = 'inline';
             
-            await fetch(`https://api.jsonbin.io/v3/b/RM{JSONBIN_ID}`, {
+            await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_ID}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -231,29 +231,29 @@
         // Tab 2: Donors
         document.getElementById('donor-list').innerHTML = appData.donors.map(d => `
             <tr>
-                <td>RM{d.name}</td>
-                <td>RMRM{d.amount.toFixed(2)}</td>
-                <td class="admin-only"><button class="remove" onclick="removeDonor(RM{d.id})">Remove</button></td>
+                <td>${d.name}</td>
+                <td>RM${d.amount.toFixed(2)}</td>
+                <td class="admin-only"><button class="remove" onclick="removeDonor(${d.id})">Remove</button></td>
             </tr>
         `).join('');
 
         // Tab 3: Expenses
         document.getElementById('expense-list').innerHTML = appData.expenses.map(e => `
             <tr>
-                <td>RM{e.desc}</td>
-                <td>RMRM{e.amount.toFixed(2)}</td>
-                <td>RM{e.receiptUrl ? `<img src="RM{e.receiptUrl}" class="receipt-img" title="Click to view full screen" onclick="openImageModal('RM{e.receiptUrl}')">` : '<span style="color:#999; font-style:italic;">No receipt</span>'}</td>
-                <td class="admin-only"><button class="remove" onclick="removeExpense(RM{e.id})">Remove</button></td>
+                <td>${e.desc}</td>
+                <td>RM${e.amount.toFixed(2)}</td>
+                <td>${e.receiptUrl ? `<img src="${e.receiptUrl}" class="receipt-img" title="Click to view full screen" onclick="openImageModal('${e.receiptUrl}')">` : '<span style="color:#999; font-style:italic;">No receipt</span>'}</td>
+                <td class="admin-only"><button class="remove" onclick="removeExpense(${e.id})">Remove</button></td>
             </tr>
         `).join('');
     }
 
     // --- ADMIN ACTIONS ---
     window.updateOverview = function(type) {
-        const val = parseFloat(document.getElementById(`admin-RM{type}`).value);
+        const val = parseFloat(document.getElementById(`admin-${type}`).value);
         if (isNaN(val)) return;
         appData[type] = val;
-        document.getElementById(`admin-RM{type}`).value = '';
+        document.getElementById(`admin-${type}`).value = '';
         saveData();
     };
 
@@ -299,7 +299,7 @@
             formData.append('image', fileInput.files[0]);
             
             try {
-                const res = await fetch(`https://api.imgbb.com/1/upload?key=RM{IMGBB_API_KEY}`, { 
+                const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, { 
                     method: 'POST', 
                     body: formData 
                 });
